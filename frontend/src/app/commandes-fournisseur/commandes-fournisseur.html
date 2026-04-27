@@ -1,0 +1,191 @@
+<div class="page">
+  <div class="page-header">
+    <h1>Commandes fournisseur</h1>
+    <p class="subtitle">Gérer les approvisionnements et les réceptions de stock</p>
+  </div>
+
+  @if (errorMessage) {
+    <div class="alert alert-error">{{ errorMessage }}</div>
+  }
+  @if (successMessage) {
+    <div class="alert alert-success">{{ successMessage }}</div>
+  }
+
+  <!-- Modal confirmation suppression -->
+  @if (showDeleteModal) {
+    <div class="modal-backdrop" (click)="annulerSupprimer()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Confirmer la suppression</h3>
+        </div>
+        <div class="modal-body">
+          <p>Êtes-vous sûr de vouloir supprimer définitivement la commande <strong>#{{ deleteTargetId }}</strong> ?</p>
+          <p class="modal-hint">Cette action est irréversible.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline btn-sm" (click)="annulerSupprimer()">Annuler</button>
+          <button type="button" class="btn btn-danger-solid btn-sm" (click)="confirmerSupprimer()">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Formulaire de création -->
+  <section class="card">
+    <h2>Nouvelle commande fournisseur</h2>
+
+    <div class="form-group">
+      <label>Fournisseur</label>
+      <select [(ngModel)]="selectedFournisseurId" class="form-control" (ngModelChange)="onFournisseurChange()">
+        <option [ngValue]="null" disabled>-- Choisir un fournisseur --</option>
+        @for (f of fournisseurs; track f.id) {
+          <option [ngValue]="f.id">{{ f.nom }} ({{ f.contact }})</option>
+        }
+      </select>
+    </div>
+
+    <div class="lignes-header">
+      <h3>Ingrédients à commander</h3>
+      <button type="button" class="btn btn-outline btn-sm" (click)="ajouterLigne()">+ Ajouter un ingrédient</button>
+    </div>
+
+    @for (ligne of lignes; track $index) {
+      <div class="ligne-form">
+        <select [(ngModel)]="ligne.ingredientId" class="form-control flex-2" (ngModelChange)="onIngredientChange(ligne)">
+          <option [ngValue]="null" disabled>-- Ingrédient --</option>
+          @for (ing of ingredients; track ing.id) {
+            <option [ngValue]="ing.id">{{ ing.nom }} ({{ ing.unite }})</option>
+          }
+        </select>
+
+        <input
+          type="number"
+          [(ngModel)]="ligne.quantite"
+          min="1"
+          placeholder="Quantité"
+          class="form-control flex-1"
+        />
+
+        <span class="prix-affichage">
+          @if (ligne.ingredientId !== null && ligne.prixUnitaire > 0) {
+            {{ ligne.prixUnitaire | number:'1.2-2' }} €/unité
+          } @else if (ligne.ingredientId !== null) {
+            <em class="text-muted">Non référencé</em>
+          } @else {
+            <span class="text-muted">—</span>
+          }
+        </span>
+
+        @if (lignes.length > 1) {
+          <button type="button" class="btn btn-danger btn-sm" (click)="supprimerLigne($index)">✕</button>
+        }
+      </div>
+    }
+
+    <div class="form-actions">
+      <button type="button" class="btn btn-primary" (click)="soumettreCommande()">
+        Créer la commande
+      </button>
+    </div>
+  </section>
+
+  <!-- Liste des commandes -->
+  <section class="card">
+    <h2>Liste des commandes ({{ commandes.length }})</h2>
+
+    @if (commandes.length === 0) {
+      <p class="empty-state">Aucune commande fournisseur.</p>
+    } @else {
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Fournisseur</th>
+            <th>Date</th>
+            <th>Statut</th>
+            <th>Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (commande of commandes; track commande.id) {
+            <tr>
+              <td>{{ commande.id }}</td>
+              <td>{{ commande.fournisseur.nom }}</td>
+              <td>{{ commande.dateCommande | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <span class="badge" [class]="'badge--' + commande.statut.toLowerCase()">
+                  {{ commande.statut | titlecase }}
+                </span>
+              </td>
+              <td>{{ calculerTotal(commande) | number:'1.2-2' }} €</td>
+              <td class="actions">
+                @if (commande.statut === 'EN_ATTENTE') {
+                  <button type="button" class="btn btn-sm btn-blue" (click)="envoyer(commande.id)">Envoyer</button>
+                  <button type="button" class="btn btn-sm btn-danger-solid" (click)="demanderSupprimer(commande.id)" title="Supprimer définitivement">Supprimer</button>
+                }
+                @if (commande.statut === 'ENVOYEE') {
+                  <button type="button" class="btn btn-sm btn-success" (click)="recevoir(commande.id)">Recevoir</button>
+                }
+                @if (commande.statut === 'RECUE') {
+                  <span class="text-muted">Reçue</span>
+                }
+                @if (commande.statut === 'ANNULEE') {
+                  <button type="button" class="btn btn-sm btn-danger-solid" (click)="demanderSupprimer(commande.id)" title="Supprimer définitivement">Supprimer</button>
+                }
+              </td>
+            </tr>
+
+            <!-- Lignes de la commande -->
+            @if (commande.lignes.length > 0) {
+              <tr class="lignes-row">
+                <td colspan="6">
+                  <div class="lignes-detail">
+                    @for (ligne of commande.lignes; track ligne.id) {
+                      <span class="ligne-chip">
+                        {{ ligne.ingredient.nom }} × {{ ligne.quantiteCommandee }} {{ ligne.ingredient.unite }}
+                        @ {{ ligne.prixUnitaire | number:'1.2-2' }} €
+                      </span>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    }
+  </section>
+
+  <!-- Catalogues des prix par fournisseur -->
+  <section class="card">
+    <h2>Tarifs par fournisseur</h2>
+    @for (f of fournisseurs; track f.id) {
+      <div class="catalogue-fournisseur">
+        <h3 class="catalogue-titre">{{ f.nom }}</h3>
+        @if (getCatalogue(f.id).length === 0) {
+          <p class="empty-state">Aucun article référencé.</p>
+        } @else {
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th>Ingrédient</th>
+                <th>Unité</th>
+                <th class="text-right">Prix unitaire</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of getCatalogue(f.id); track item.ingredientId) {
+                <tr>
+                  <td>{{ item.ingredientNom }}</td>
+                  <td>{{ item.ingredientUnite }}</td>
+                  <td class="text-right">{{ item.prixUnitaire | number:'1.2-2' }} €</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+    }
+  </section>
+</div>

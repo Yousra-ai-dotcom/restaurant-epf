@@ -1,0 +1,144 @@
+<div class="checker">
+
+  <!-- En-tête -->
+  <div class="checker-header">
+    <div class="checker-title">
+      <div class="checker-title-icon">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div>
+        <h1>Vérificateur d'API</h1>
+        <p class="checker-subtitle">Corrigé automatique — {{ totalCount }} endpoints à vérifier</p>
+      </div>
+    </div>
+
+    <button class="btn-run" (click)="runAllTests()" [disabled]="running">
+      <span class="btn-run-spinner" *ngIf="running"></span>
+      <svg *ngIf="!running" viewBox="0 0 24 24" fill="none"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>
+      {{ running ? 'Tests en cours...' : 'Lancer tous les tests' }}
+    </button>
+  </div>
+
+  <!-- Barre de score -->
+  <div class="score-bar" *ngIf="doneCount > 0">
+    <div class="score-counts">
+      <span class="score-chip score-chip--green">
+        <span class="dot dot--green"></span>{{ greenCount }} OK
+      </span>
+      <span class="score-chip score-chip--orange">
+        <span class="dot dot--orange"></span>{{ orangeCount }} à corriger
+      </span>
+      <span class="score-chip score-chip--red">
+        <span class="dot dot--red"></span>{{ redCount }} manquant
+      </span>
+      <span class="score-chip score-chip--gray" *ngIf="skippedCount > 0">
+        <span class="dot dot--gray"></span>{{ skippedCount }} ignoré
+      </span>
+    </div>
+    <div class="score-progress-wrap">
+      <div class="score-progress-track">
+        <div class="score-progress-fill score-progress-fill--green"
+             [style.width.%]="(greenCount / totalCount) * 100"></div>
+        <div class="score-progress-fill score-progress-fill--orange"
+             [style.width.%]="(orangeCount / totalCount) * 100"></div>
+        <div class="score-progress-fill score-progress-fill--red"
+             [style.width.%]="(redCount / totalCount) * 100"></div>
+      </div>
+      <span class="score-label">{{ greenCount }}/{{ totalCount }}</span>
+    </div>
+  </div>
+
+  <!-- Catégories -->
+  <div class="category" *ngFor="let cat of categories">
+    <div class="category-header">
+      <h2 class="category-title">{{ cat }}</h2>
+      <div class="category-chips">
+        <ng-container *ngIf="getCategoryScore(cat) as score">
+          <span class="cat-chip cat-chip--green"  *ngIf="score.green  > 0">{{ score.green }} ✓</span>
+          <span class="cat-chip cat-chip--orange" *ngIf="score.orange > 0">{{ score.orange }} !</span>
+          <span class="cat-chip cat-chip--red"    *ngIf="score.red    > 0">{{ score.red }} ✗</span>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="endpoint-table">
+      <div class="endpoint-row" *ngFor="let check of getChecksByCategory(cat)"
+           [class.endpoint-row--green]="check.status === 'green'"
+           [class.endpoint-row--orange]="check.status === 'orange'"
+           [class.endpoint-row--red]="check.status === 'red'">
+
+        <!-- Méthode + chemin -->
+        <div class="endpoint-left">
+          <span class="method-badge" [class]="'method-badge--' + check.method.toLowerCase()">
+            {{ check.method }}
+          </span>
+          <div class="endpoint-path-group">
+            <code class="endpoint-path">{{ check.path }}</code>
+            <div class="id-row" *ngIf="hasIdParam(check)">
+              <span class="id-label">ID :</span>
+              <input class="id-input"
+                     type="number"
+                     min="1"
+                     [value]="customIds[check.id] || ''"
+                     (input)="customIds[check.id] = $any($event.target).value"
+                     placeholder="auto"
+                     [disabled]="isTestRunning(check.id)">
+            </div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="endpoint-desc">{{ check.description }}</div>
+
+        <!-- Bouton test individuel -->
+        <button class="btn-single"
+                (click)="runSingleCheck(check.id)"
+                [disabled]="isTestRunning(check.id)"
+                title="Tester cet endpoint individuellement">
+          <span class="btn-single-spinner" *ngIf="singleRunning.has(check.id)"></span>
+          <svg *ngIf="!singleRunning.has(check.id)" viewBox="0 0 24 24" fill="none">
+            <path d="M5 3l14 9-14 9V3z" fill="currentColor"/>
+          </svg>
+        </button>
+
+        <!-- Statut -->
+        <div class="endpoint-status">
+          <!-- Pending -->
+          <span class="status-dot status-dot--pending" *ngIf="check.status === 'pending'" title="En attente"></span>
+          <!-- Checking -->
+          <span class="status-dot status-dot--checking" *ngIf="check.status === 'checking'" title="Test en cours..."></span>
+          <!-- Green -->
+          <span class="status-dot status-dot--green" *ngIf="check.status === 'green'" title="OK"></span>
+          <!-- Orange -->
+          <span class="status-dot status-dot--orange" *ngIf="check.status === 'orange'" title="Problème détecté"></span>
+          <!-- Red -->
+          <span class="status-dot status-dot--red" *ngIf="check.status === 'red'" title="Endpoint manquant"></span>
+          <!-- Skipped -->
+          <span class="status-dot status-dot--skipped" *ngIf="check.status === 'skipped'" title="Non testé"></span>
+
+          <span class="status-code" *ngIf="check.statusCode">{{ check.statusCode }}</span>
+        </div>
+
+        <!-- Message -->
+        <div class="endpoint-message" *ngIf="check.message"
+             [class.endpoint-message--green]="check.status === 'green'"
+             [class.endpoint-message--orange]="check.status === 'orange'"
+             [class.endpoint-message--red]="check.status === 'red'"
+             [class.endpoint-message--skipped]="check.status === 'skipped'">
+          {{ check.message }}
+        </div>
+        <div class="endpoint-message endpoint-message--placeholder" *ngIf="!check.message && check.status !== 'pending' && check.status !== 'checking'">
+          —
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- État initial -->
+  <div class="empty-state" *ngIf="doneCount === 0 && !running">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <p>Cliquez sur <strong>Lancer tous les tests</strong> pour vérifier les endpoints de l'étudiant.</p>
+    <p class="empty-state-note">Des données de test seront créées puis supprimées automatiquement.</p>
+  </div>
+
+</div>

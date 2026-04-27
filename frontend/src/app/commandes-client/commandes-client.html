@@ -1,0 +1,201 @@
+<div class="page-container">
+  <h1 class="page-title">Commandes Clients</h1>
+
+  <div class="alert alert-error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="alert alert-success" *ngIf="successMessage">{{ successMessage }}</div>
+
+  <!-- Modal stock insuffisant -->
+  <div class="modal-backdrop" *ngIf="showStockModal" (click)="fermerStockModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-icon">⚠️</span>
+        <h3>Préparation impossible</h3>
+      </div>
+      <div class="modal-body">
+        <p>Cette commande ne peut pas être préparée car certains stocks sont insuffisants.</p>
+        <ul class="modal-manques">
+          <li *ngFor="let manque of stockManques">{{ manque }}</li>
+        </ul>
+        <p class="modal-hint">Créez une commande fournisseur pour réapprovisionner le stock.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="fermerStockModal()">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal confirmation suppression -->
+  <div class="modal-backdrop" *ngIf="showDeleteModal" (click)="annulerSupprimer()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-icon">🗑️</span>
+        <h3>Confirmer la suppression</h3>
+      </div>
+      <div class="modal-body">
+        <p>Êtes-vous sûr de vouloir supprimer définitivement la commande <strong>#{{ deleteTargetId }}</strong> ?</p>
+        <p class="modal-hint">Cette action est irréversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="annulerSupprimer()">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="confirmerSupprimer()">Supprimer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formulaire de création -->
+  <div class="card">
+    <h2 class="card-title">Nouvelle commande</h2>
+    <div class="form">
+
+      <div class="form-group">
+        <label class="form-label">Client</label>
+        <select [(ngModel)]="selectedClientId" class="form-control">
+          <option [ngValue]="null" disabled>-- Sélectionner un client --</option>
+          <option *ngFor="let c of clients" [ngValue]="c.id">
+            {{ c.prenom }} {{ c.nom }}
+          </option>
+        </select>
+      </div>
+
+      <div class="lignes-section">
+        <h3 class="section-subtitle">Plats</h3>
+        <div *ngFor="let ligne of lignes; let i = index" class="ligne-row">
+          <select [(ngModel)]="ligne.platId" class="form-control ligne-select">
+            <option [ngValue]="null" disabled>-- Sélectionner un plat --</option>
+            <option *ngFor="let p of plats" [ngValue]="p.id">
+              {{ p.nom }} ({{ p.prix | number:'1.2-2' }} €)
+            </option>
+          </select>
+          <input
+            type="number"
+            [(ngModel)]="ligne.quantite"
+            min="1"
+            class="form-control ligne-qte"
+            placeholder="Qté"
+          />
+          <button type="button" class="btn btn-danger btn-sm" (click)="supprimerLigne(i)" [disabled]="lignes.length === 1">
+            Supprimer
+          </button>
+        </div>
+
+        <button type="button" class="btn btn-secondary" (click)="ajouterLigne()">
+          + Ajouter un plat
+        </button>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-primary" (click)="soumettreCommande()">Créer la commande</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tableau des commandes -->
+  <div class="card">
+    <h2 class="card-title">Liste des commandes</h2>
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Client</th>
+            <th>Date</th>
+            <th>Statut</th>
+            <th>Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let cmd of commandes">
+            <tr [class]="'statut-' + cmd.statut.toLowerCase()">
+              <td>{{ cmd.id }}</td>
+              <td>{{ nomClient(cmd) }}</td>
+              <td>{{ cmd.dateCommande | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <span class="badge" [class]="'badge-' + cmd.statut.toLowerCase()">
+                  {{ cmd.statut }}
+                </span>
+              </td>
+              <td class="text-right">{{ calculerTotal(cmd) | number:'1.2-2' }} €</td>
+              <td class="actions-cell">
+                <button
+                  type="button"
+                  class="btn btn-secondary btn-sm"
+                  (click)="toggleDetail(cmd.id)"
+                  title="Voir le détail"
+                >
+                  {{ expandedId === cmd.id ? '▲' : '▼' }}
+                </button>
+                <button
+                  type="button"
+                  *ngIf="cmd.statut === 'EN_ATTENTE'"
+                  class="btn btn-info btn-sm"
+                  (click)="preparer(cmd.id)"
+                >
+                  Préparer
+                </button>
+                <button
+                  type="button"
+                  *ngIf="cmd.statut === 'EN_PREPARATION'"
+                  class="btn btn-success btn-sm"
+                  (click)="servir(cmd.id)"
+                >
+                  Servir
+                </button>
+                <button
+                  type="button"
+                  *ngIf="cmd.statut === 'EN_ATTENTE' || cmd.statut === 'ANNULEE'"
+                  class="btn btn-danger btn-sm"
+                  (click)="demanderSupprimer(cmd.id)"
+                  title="Supprimer définitivement cette commande"
+                >
+                  Supprimer
+                </button>
+              </td>
+            </tr>
+            <tr *ngIf="expandedId === cmd.id" class="detail-row">
+              <td colspan="6">
+                <div class="detail-lignes">
+                  <strong>Détail :</strong>
+                  <span *ngFor="let l of cmd.lignes" class="detail-chip">
+                    {{ l.plat.nom }} × {{ l.quantite }} ({{ (l.plat.prix * l.quantite) | number:'1.2-2' }} €)
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+          <tr *ngIf="commandes.length === 0">
+            <td colspan="6" class="empty-row">Aucune commande.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Recettes des plats -->
+  <div class="card">
+    <h2 class="card-title">Recettes</h2>
+    <div class="recettes-grid">
+      <div *ngFor="let plat of platDetails" class="recette-card">
+        <h3 class="recette-nom">{{ plat.nom }}</h3>
+        <p class="recette-description">{{ plat.description }}</p>
+        <p class="recette-prix">{{ plat.prix | number:'1.2-2' }} €</p>
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th>Ingrédient</th>
+              <th>Unité</th>
+              <th class="text-right">Qté / portion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pi of plat.ingredients">
+              <td>{{ pi.ingredient.nom }}</td>
+              <td>{{ pi.ingredient.unite }}</td>
+              <td class="text-right">{{ pi.quantiteRequise }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

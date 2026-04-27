@@ -1,0 +1,362 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.page-header {
+  margin-bottom: 1.75rem;
+}
+
+.page-header h1 {
+  font-size: 1.75rem;
+  color: #2c3e50;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: #7f8c8d;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Alerts */
+.alert {
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.alert-error {
+  background-color: #fdf2f2;
+  border: 1px solid #f5c6c6;
+  border-left: 4px solid #e74c3c;
+  color: #c0392b;
+}
+
+.alert-success {
+  background-color: #eafaf1;
+  border: 1px solid #a9dfbf;
+  border-left: 4px solid #27ae60;
+  color: #1e8449;
+}
+
+/* Card */
+.card {
+  background: #fff;
+  border: 1px solid #e8e0d8;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f0ece8;
+}
+
+.card h3 {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #5d4e3a;
+  margin: 0;
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #5d4e3a;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.35rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd6cc;
+  border-radius: 6px;
+  background: #fff;
+  color: #2c3e50;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  height: 36px;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #c0392b;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12);
+}
+
+/* Lignes */
+.lignes-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.ligne-form {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+
+.form-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+}
+
+.btn-primary {
+  padding: 0.55rem 1.25rem;
+  font-size: 0.875rem;
+  background-color: #c0392b;
+  color: #fff;
+}
+
+.btn-primary:hover { background-color: #a93226; }
+
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid #c0392b;
+  color: #c0392b;
+}
+
+.btn-outline:hover { background-color: #fdf2f2; }
+
+.btn-danger {
+  background-color: #fdf2f2;
+  color: #e74c3c;
+  border: 1px solid #f5c6c6;
+}
+
+.btn-danger:hover { background-color: #f9e0e0; }
+
+.btn-blue {
+  background-color: #ebf5fb;
+  color: #2980b9;
+  border: 1px solid #aed6f1;
+}
+
+.btn-blue:hover { background-color: #d6eaf8; }
+
+.btn-success {
+  background-color: #eafaf1;
+  color: #27ae60;
+  border: 1px solid #a9dfbf;
+}
+
+.btn-success:hover { background-color: #d5f5e3; }
+
+.btn-danger-solid {
+  background-color: #e74c3c;
+  color: #fff;
+  border: 1px solid #c0392b;
+}
+
+.btn-danger-solid:hover { background-color: #c0392b; }
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  max-width: 420px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.modal-header h3 {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  color: #2c3e50;
+}
+
+.modal-body p {
+  margin: 0 0 0.5rem;
+  font-size: 0.875rem;
+  color: #2c3e50;
+}
+
+.modal-hint {
+  color: #e74c3c;
+  font-size: 0.8rem !important;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+}
+
+/* Table */
+.table {
+  font-size: 0.875rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  background-color: #f7f3ef;
+  border-bottom: 2px solid #e8e0d8;
+  font-weight: 600;
+  color: #5d4e3a;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid #f0ece8;
+  color: #2c3e50;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background-color: #fafaf9;
+}
+
+.actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.text-muted {
+  color: #bdc3c7;
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.badge--en_attente { background-color: #fef9ec; color: #b7770d; }
+.badge--envoyee    { background-color: #ebf5fb; color: #2980b9; }
+.badge--recue      { background-color: #eafaf1; color: #27ae60; }
+.badge--annulee    { background-color: #f8f8f8; color: #bdc3c7; }
+
+/* Lignes detail */
+.lignes-row td {
+  padding: 0 0.75rem 0.5rem;
+  background-color: #fafaf9;
+}
+
+.lignes-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.4rem 0;
+}
+
+.ligne-chip {
+  font-size: 0.78rem;
+  padding: 0.2rem 0.6rem;
+  background-color: #f0ece8;
+  border-radius: 10px;
+  color: #5d4e3a;
+}
+
+.empty-state {
+  text-align: center;
+  color: #bdc3c7;
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* Catalogue fournisseur */
+.catalogue-fournisseur {
+  margin-bottom: 1.25rem;
+}
+
+.catalogue-titre {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #f0ece8;
+}
+
+.table-sm th,
+.table-sm td {
+  padding: 0.4rem 0.6rem;
+  font-size: 0.8rem;
+}
+
+.text-right { text-align: right; }
+
+/* Prix auto-rempli dans le formulaire */
+.prix-affichage {
+  flex: 1;
+  padding: 0 0.5rem;
+  font-size: 0.875rem;
+  color: #2c3e50;
+  font-weight: 500;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .page { padding: 1rem; }
+  .ligne-form { flex-direction: column; }
+  .flex-1, .flex-2 { width: 100%; }
+  .table { font-size: 0.8rem; }
+}

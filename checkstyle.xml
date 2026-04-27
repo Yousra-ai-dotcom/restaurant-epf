@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+    "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+    "https://checkstyle.org/dtds/configuration_1_3.dtd">
+
+<module name="Checker">
+    <property name="severity" value="warning"/>
+    <property name="fileExtensions" value="java"/>
+
+    <!-- Longueur maximale d'une ligne -->
+    <module name="LineLength">
+        <property name="max" value="120"/>
+    </module>
+
+    <!-- Pas de tabulations (utiliser des espaces) -->
+    <module name="FileTabCharacter"/>
+
+    <!-- Pas d'espaces en fin de ligne -->
+    <module name="RegexpSingleline">
+        <property name="format" value="\s+$"/>
+        <property name="message" value="Espace(s) en fin de ligne."/>
+    </module>
+
+    <module name="TreeWalker">
+
+        <!-- Nommage -->
+        <module name="TypeName"/>              <!-- Classes en PascalCase -->
+        <module name="MethodName"/>            <!-- Méthodes en camelCase -->
+        <module name="LocalVariableName"/>     <!-- Variables locales en camelCase -->
+        <module name="MemberName"/>            <!-- Champs en camelCase -->
+        <module name="ParameterName"/>         <!-- Paramètres en camelCase -->
+        <module name="ConstantName"/>          <!-- Constantes en UPPER_SNAKE_CASE -->
+        <module name="PackageName">
+            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+        </module>
+
+        <!-- Imports -->
+        <module name="AvoidStarImport"/>       <!-- Pas de import java.util.* -->
+        <module name="UnusedImports"/>         <!-- Pas d'imports inutilisés -->
+        <module name="RedundantImport"/>       <!-- Pas de doublons d'import -->
+
+        <!-- Accolades -->
+        <module name="NeedBraces"/>            <!-- Accolades obligatoires pour if/for/while -->
+        <module name="LeftCurly"/>             <!-- { sur la même ligne -->
+
+        <!-- Espaces -->
+        <module name="WhitespaceAround">       <!-- Espaces autour des opérateurs -->
+            <property name="allowEmptyMethods" value="true"/>
+            <property name="allowEmptyConstructors" value="true"/>
+        </module>
+        <module name="NoWhitespaceBefore"/>    <!-- Pas d'espace avant , ; -->
+
+        <!-- Modificateurs -->
+        <module name="ModifierOrder"/>         <!-- Ordre : public static final ... -->
+
+        <!-- Bonne pratique -->
+        <module name="EmptyBlock"/>            <!-- Pas de bloc vide sans commentaire -->
+        <module name="SimplifyBooleanReturn"/> <!-- return condition; plutôt que if(...) return true; -->
+        <module name="StringLiteralEquality"/> <!-- Pas de == sur les String -->
+        <module name="EqualsHashCode"/>        <!-- equals() et hashCode() vont ensemble -->
+
+    </module>
+</module>

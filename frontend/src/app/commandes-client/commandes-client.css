@@ -1,0 +1,367 @@
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  color: #2c3e50;
+  margin-bottom: 1.75rem;
+}
+
+/* Alerts */
+.alert {
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+.alert-error {
+  background-color: #fdf2f2;
+  border: 1px solid #f5c6c6;
+  border-left: 4px solid #e74c3c;
+  color: #c0392b;
+}
+
+.alert-success {
+  background-color: #eafaf1;
+  border: 1px solid #a9dfbf;
+  border-left: 4px solid #27ae60;
+  color: #1e8449;
+}
+
+/* Card */
+.card {
+  background: #fff;
+  border: 1px solid #e8e0d8;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #f0ece8;
+}
+
+/* Form */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #5d4e3a;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.35rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd6cc;
+  border-radius: 6px;
+  background: #fff;
+  color: #2c3e50;
+  height: 36px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #c0392b;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12);
+}
+
+.lignes-section {
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #5d4e3a;
+  margin-bottom: 0.75rem;
+}
+
+.ligne-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.ligne-select {
+  flex: 3;
+}
+
+.ligne-qte {
+  flex: 1;
+  min-width: 70px;
+}
+
+.form-actions {
+  margin-top: 1.25rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+
+.btn-sm {
+  padding: 0.3rem 0.65rem;
+  font-size: 0.8rem;
+}
+
+.btn-primary {
+  padding: 0.55rem 1.25rem;
+  font-size: 0.875rem;
+  background-color: #c0392b;
+  color: #fff;
+}
+.btn-primary:hover { background-color: #a93226; }
+
+.btn-secondary {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  background-color: #f7f3ef;
+  color: #5d4e3a;
+  border: 1px solid #e8e0d8;
+}
+.btn-secondary:hover { background-color: #ede8e2; }
+
+.btn-danger {
+  background-color: #fdf2f2;
+  color: #e74c3c;
+  border: 1px solid #f5c6c6;
+}
+.btn-danger:hover { background-color: #f9e0e0; }
+
+.btn-info {
+  background-color: #ebf5fb;
+  color: #2980b9;
+  border: 1px solid #aed6f1;
+}
+.btn-info:hover { background-color: #d6eaf8; }
+
+.btn-success {
+  background-color: #eafaf1;
+  color: #27ae60;
+  border: 1px solid #a9dfbf;
+}
+.btn-success:hover { background-color: #d5f5e3; }
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Table */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table {
+  font-size: 0.875rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  background-color: #f7f3ef;
+  border-bottom: 2px solid #e8e0d8;
+  font-weight: 600;
+  color: #5d4e3a;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.table td {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid #f0ece8;
+  color: #2c3e50;
+  vertical-align: middle;
+}
+
+.table tbody tr:hover {
+  background-color: #fafaf9;
+}
+
+.text-right { text-align: right; }
+
+.actions-cell {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.empty-row {
+  text-align: center;
+  color: #bdc3c7;
+  font-style: italic;
+  padding: 2rem;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.badge-en_attente    { background-color: #fef9ec; color: #b7770d; }
+.badge-en_preparation { background-color: #fde8d8; color: #c0532b; }
+.badge-servie        { background-color: #eafaf1; color: #27ae60; }
+.badge-annulee       { background-color: #f8f8f8; color: #bdc3c7; }
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid #f0ece8;
+}
+
+.modal-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.modal-body {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.modal-body p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #2c3e50;
+}
+
+.modal-manques {
+  background: #fdf2f2;
+  border: 1px solid #f5c6c6;
+  border-left: 3px solid #e74c3c;
+  border-radius: 6px;
+  padding: 0.6rem 0.75rem 0.6rem 1.75rem;
+  color: #c0392b;
+  font-family: monospace;
+  font-size: 0.82rem;
+  margin: 0;
+  list-style: disc;
+}
+
+.modal-manques li + li {
+  margin-top: 0.3rem;
+}
+
+.modal-hint {
+  color: #7f8c8d !important;
+  font-size: 0.8rem !important;
+  font-style: italic;
+}
+
+.modal-footer {
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #f0ece8;
+}
+
+/* Recettes */
+.recettes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.recette-card {
+  border: 1px solid #e8e0d8;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fdfbf9;
+}
+
+.recette-nom {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin: 0 0 0.25rem;
+}
+
+.recette-description {
+  font-size: 0.8rem;
+  color: #7f8c8d;
+  margin: 0 0 0.4rem;
+  font-style: italic;
+}
+
+.recette-prix {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #c0392b;
+  margin: 0 0 0.75rem;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .page-container { padding: 1rem; }
+  .ligne-row { flex-direction: column; }
+  .ligne-select, .ligne-qte { width: 100%; }
+  .recettes-grid { grid-template-columns: 1fr; }
+}
