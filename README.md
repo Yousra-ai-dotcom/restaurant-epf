@@ -2,7 +2,8 @@
 ## 👤 Auteur
 
 - Yousra Ameur
-**École EPF — Informatique et Génie Logiciel**
+- 
+École EPF — Informatique et Génie Logiciel**
 ---
 ## ✅ Fonctionnalités
 
