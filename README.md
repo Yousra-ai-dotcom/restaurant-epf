@@ -1,9 +1,10 @@
 # Restaurant EPF — Système de gestion de restaurant
+École EPF — Informatique et Génie Logiciel**
 ## 👤 Auteur
 
 - Yousra Ameur
-  
-École EPF — Informatique et Génie Logiciel**
+## Groupe
+-SNI1
 ---
 ## ✅ Fonctionnalités
 
